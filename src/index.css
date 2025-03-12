@@ -1,0 +1,228 @@
+@import "tailwindcss";
+
+ /* Evita el scroll del body cuando un modal esté abierto */
+ body.modal-open {
+  overflow: hidden;
+}
+
+
+/* ==========================================================
+Estilos del Navbar y Filtros en dropdown
+========================================================== */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  min-width: 200px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  z-index: 50;
+}
+
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-content label {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.dropdown-content label:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdown-content button {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #f3f4f6;
+}
+.fitLis{
+  width: 1370px;
+  height: 550px;
+  margin: 0px;
+}
+
+.container-product{
+  width: 1400px;
+  height: 900px;
+  
+}
+/* ==========================================================
+Estilos para las tarjetas de producto (pantallas grandes):
+Contenedor: 274 x 335 px
+Imagen: 255 x 255 px centrada
+========================================================== */
+.product-card {
+  width: 274px;
+  height: 403px;
+  border-radius: 0.2rem;
+  overflow: hidden;
+  position: relative;
+  background: transparent;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1);
+}
+
+.image-container {
+  width: 275px;
+  height: 256px;
+  position: relative;
+}
+
+.product-image {
+  width: 255px;
+  height: 255px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Overlay que aparece sobre la imagen */
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.2s, border 0.2s, background 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+}
+
+.image-container:hover .image-overlay {
+  opacity: 1;
+  background: rgba(31, 28, 28, 0.591);
+  border: 2px solid #ffffff00;
+}
+
+.image-container:hover .image-overlay * {
+  color: #ffffff !important;
+}
+
+/* ==========================================================
+Sección de información del producto (siempre visible debajo de la imagen)
+========================================================== */
+.product-info {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.product-info p {
+  font-size: 0.875rem;
+  color: #1f2937;
+}
+
+.product-info .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  color: #1f2937;
+}
+
+.add-to-cart {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.add-to-cart:hover {
+  color: #4b5563;
+}
+
+
+/* ==========================================================
+Estilos para el Modal de Producto (se mantiene similar)
+========================================================== */
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.105); /* Fondo oscuro con opacidad */
+  z-index: 40; /* Se coloca debajo del modal pero encima del contenido */
+  opacity: 0;
+  transition: opacity 0.3s ease; /* Transición suave para la opacidad */
+}
+.modal-custom {
+  background: #ffffff;
+  position: fixed;
+  border-radius: 20px;
+
+}
+
+
+.img-custom {
+  position: relative;
+  top: 24.3%;
+  right: 0%;
+  left: 19%;
+  width: 351px;
+  height: 340px;
+  object-fit: cover; /* Recorta la imagen manteniendo proporción */
+  border-radius: 10px; /* Opcional: esquinas redondeadas */
+}
+/* ==========================================================
+Estilos para el Modal Cart 
+========================================================== */
+.modal_cart{
+  position: fixed;
+  background: #0000004f;
+  opacity: 1.3s;
+}
+
+/* ==========================================================
+Reglas responsive:
+En pantallas pequeñas se muestran 2 columnas, en pantallas medianas/grandes 4 columnas.
+========================================================== */
+@media (max-width: 768px) {
+  .product-card {
+      width: calc(50% - 1rem);
+      height: auto;
+  }
+
+  .image-container {
+      height: auto;
+  }
+
+  .product-image {
+      width: 100%;
+      height: auto;
+  }
+}
