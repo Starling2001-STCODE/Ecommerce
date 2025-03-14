@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useMemo } from "react";
 import Nav from './components/Nav'
 import Header from './components/Header'
 import Products from './components/Products'
 import { db } from './data/db'
-import ModalDetails from './components/ModalDetails'
+import ProductDetails from './components/ProductDetails'
 import CartModal from './components/CartModal'
 
 function App() {
@@ -11,23 +12,36 @@ function App() {
   const [data, setData] = useState(db);
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([])
+  const [incrementProd, setIncrementProd] = useState([])
 
   const addToCart = (cartItems) => {
-    const itemExist = cart.findIndex(productsItems => productsItems.id === cartItems.id)
-    console.log()
-    if (itemExist > -1) {
-      const updatedCart = [...cart]
-      updatedCart[itemExist].quantity++
-      setCart(updatedCart)
+    const itemsExist = cart.findIndex((productItem) => productItem.id === cartItems.id)
+    console.log(cartItems.quantity)
+    if (itemsExist > -1) {
+      setCart([...incrementProd])
+      closeModal()
     } else {
-      cartItems.quantity = 1
       setCart([...cart, cartItems])
+      closeModal()
     }
 
   }
 
+  const increaseQuantityProd = (modalItems) => {
+    const itemsExist = incrementProd.findIndex(productItem => productItem.id === modalItems.id)
+    if (itemsExist > -1) {
+      const updatedProd = [...incrementProd]
+      updatedProd[itemsExist].quantity++
+      modalItems.totalProd = modalItems.quantity * modalItems.price
+      setIncrementProd(updatedProd)
+    }
+  }
+
   const openModal = (product) => {
+    quantity: product.quantity = 1
+    totalProd: product.totalProd = product.price
+    setIncrementProd([...incrementProd, product])
     setSelectedProduct(product)
     setShowModal(true)
   };
@@ -57,7 +71,7 @@ function App() {
               <Products
                 key={products.id}
                 products={products}
-                onAddToCart={openModal}
+                openModal={openModal}
               />
             ))}
 
@@ -92,6 +106,7 @@ function App() {
 
       {/* <!-- Modal del Carrito --> */}
       <CartModal
+        increaseQuantityProd={increaseQuantityProd}
         cart={cart}
       />
 
@@ -116,12 +131,12 @@ function App() {
             transition-transform 
             duration-300 z-50">
 
-            <ModalDetails
+            <ProductDetails
               key={selectedProduct.id}
               selectedProduct={selectedProduct}
               closeModal={closeModal}
-              setCart={setCart}
               addToCart={addToCart}
+              increaseQuantityProd={increaseQuantityProd}
             />
           </div>
         </>

@@ -204,7 +204,10 @@ Estilos para el Modal Cart
 .modal_cart{
   position: fixed;
   background: #0000004f;
-  opacity: 1.3s;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  z-index: 50;
 }
 
 /* ==========================================================

@@ -1,4 +1,4 @@
-export default function Products({ products, onAddToCart }) {
+export default function Products({ products, openModal }) {
 
     const { id, name, image, description, price, stock } = products
 
@@ -9,7 +9,7 @@ export default function Products({ products, onAddToCart }) {
                 <div className="image-overlay">
                     <h3 className="text-lg font-semibold">{name}</h3>
                     <p>${price}</p>
-                    <button className="mt-2 p-2 rounded-full hover:bg-white" onClick={() => onAddToCart(products)}>
+                    <button className="mt-2 p-2 rounded-full hover:bg-black" onClick={() => openModal(products)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -22,7 +22,7 @@ export default function Products({ products, onAddToCart }) {
                 <p className="text-gray-800 text-sm">{description}</p>
                 <div className="info-row flex justify-between items-center">
                     <span>Stock: <span className="stock">{stock}</span></span>
-                    <button className="add-to-cart p-1 hover:bg-gray-200 rounded" onClick={() => onAddToCart(products)}>
+                    <button className="add-to-cart p-1 hover:bg-gray-200 rounded" onClick={() => openModal(products)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

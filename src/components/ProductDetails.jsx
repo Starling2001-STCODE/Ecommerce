@@ -1,5 +1,8 @@
+import { useMemo } from "react";
 
-export default function ModalDetails({ selectedProduct, addToCart, setCart, closeModal }) {
+export default function ProductDetails({ selectedProduct, addToCart, closeModal, increaseQuantityProd }) {
+
+  const productTotal = useMemo(() => selectedProduct.quantity * selectedProduct.price, [selectedProduct]);
 
 
   return (
@@ -60,9 +63,11 @@ export default function ModalDetails({ selectedProduct, addToCart, setCart, clos
               type="number"
               min="1"
               className="w-16 text-center border rounded mx-2"
-              defaultValue="1"
+              defaultValue={selectedProduct.quantity}
+              value={`${selectedProduct.quantity}`}
             />
             <button
+              onClick={() => increaseQuantityProd(selectedProduct)}
               id="increaseQty"
               className="bg-gray-200 p-2 rounded hover:bg-gray-300"
             >
@@ -81,11 +86,11 @@ export default function ModalDetails({ selectedProduct, addToCart, setCart, clos
           </div>
           <div className="flex justify-between">
             <span>Cantidad de artículos:</span>
-            <span>1</span>
+            <span>{selectedProduct.quantity}</span>
           </div>
           <div className="flex justify-between">
             <span>Total de artículos:</span>
-            <span>${selectedProduct.price}</span>
+            <span>${selectedProduct.totalProd}</span>
           </div>
           <div className="flex justify-between">
             <span>Total envío:</span>
