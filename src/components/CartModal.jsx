@@ -20,6 +20,7 @@ export default function CartModal({ cart, increaseQuantityProd }) {
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
+                      onClick={() => increaseQuantityProd(cart.id, "decrease")}
                       className="bg-gray-200 p-1 rounded hover:bg-gray-300">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
@@ -27,7 +28,7 @@ export default function CartModal({ cart, increaseQuantityProd }) {
                     </button>
                     <span>{cart.quantity}</span>
                     <button
-                      onClick={() => increaseQuantityProd(cart)}
+                      onClick={() => increaseQuantityProd(cart.id, "increase")}
                       className="bg-gray-200 p-1 rounded hover:bg-gray-300">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />

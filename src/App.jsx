@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { v4 as uuidv4 } from "uuid";
 import { useMemo } from "react";
 import Nav from './components/Nav'
 import Header from './components/Header'
@@ -13,44 +14,90 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [cart, setCart] = useState([])
-  const [incrementProd, setIncrementProd] = useState([])
+  const [animatedProductId, setAnimatedProductId] = useState(null);
 
-  const addToCart = (cartItems) => {
-    const itemsExist = cart.findIndex((productItem) => productItem.id === cartItems.id)
-    console.log(cartItems.quantity)
-    if (itemsExist > -1) {
-      setCart([...incrementProd])
-      closeModal()
-    } else {
-      setCart([...cart, cartItems])
-      closeModal()
+  const triggerCarritoAnimation = (productId) => {
+    // Activa la animación para el producto específico
+    setAnimatedProductId(productId);
+
+    // Desactiva la animación después de que termine
+    setTimeout(() => {
+      setAnimatedProductId(null);
+    }, 500); // 500ms es la duración de la animación
+  };
+
+  const addToCart = () => {
+    if (selectedProduct) {
+      const itemsExist = cart.findIndex((item) => item.id === selectedProduct.id);
+
+      if (itemsExist > -1) {
+        // Si el producto ya existe en el carrito, suma la cantidad
+        const updatedCart = cart.map((item) => {
+          if (item.id === selectedProduct.id) {
+            return {
+              ...item,
+              // quantity: item.quantity + selectedProduct.quantity,
+              // totalProd: (item.quantity + selectedProduct.quantity) * item.price,
+            };
+          }
+          return item;
+        });
+        setCart(updatedCart);
+      } else {
+        // Si el producto no existe en el carrito, añádelo como una copia independiente
+        setCart([...cart, { ...selectedProduct }]);
+      }
+      closeModal();
+    }
+  };
+
+  const increaseQuantityProd = (id, action = "increase") => {
+    // Acción para el modal
+    if (selectedProduct && selectedProduct.id === id) {
+      const updatedProduct = { ...selectedProduct }; // Copia del producto seleccionado
+
+      if (action === "increase") {
+        updatedProduct.quantity += 1;
+      } else if (action === "decrease" && updatedProduct.quantity > 1) {
+        updatedProduct.quantity -= 1;
+      }
+
+      updatedProduct.totalProd = updatedProduct.quantity * updatedProduct.price;
+      setSelectedProduct(updatedProduct); // Actualiza el estado del producto seleccionado
     }
 
-  }
-
-  const increaseQuantityProd = (modalItems) => {
-    const itemsExist = incrementProd.findIndex(productItem => productItem.id === modalItems.id)
+    // Acción para el carrito
+    const itemsExist = cart.findIndex((item) => item.id === id);
     if (itemsExist > -1) {
-      const updatedProd = [...incrementProd]
-      updatedProd[itemsExist].quantity++
-      modalItems.totalProd = modalItems.quantity * modalItems.price
-      setIncrementProd(updatedProd)
+      const updatedCart = cart.map((item) => {
+        if (item.id === id) {
+          const updatedItem = { ...item }; // Copia del producto en el carrito
+          if (action === "increase") {
+            updatedItem.quantity += 1;
+          } else if (action === "decrease" && updatedItem.quantity > 1) {
+            updatedItem.quantity -= 1;
+          }
+          updatedItem.totalProd = updatedItem.quantity * updatedItem.price;
+          return updatedItem;
+        }
+        return item;
+      });
+
+      setCart(updatedCart); // Actualiza el estado del carrito
     }
-  }
+  };
 
   const openModal = (product) => {
-    quantity: product.quantity = 1
-    totalProd: product.totalProd = product.price
-    setIncrementProd([...incrementProd, product])
-    setSelectedProduct(product)
-    setShowModal(true)
+    // Crea una copia independiente del producto seleccionado
+    const productCopy = { ...product, quantity: 0, totalProd: product.price };
+    setSelectedProduct(productCopy);
+    setShowModal(true);
   };
 
   const closeModal = () => {
-    setShowModal(false)
-    setSelectedProduct(null)
+    setShowModal(false);
+    setSelectedProduct(null);
   };
-
 
 
   return (
@@ -72,9 +119,9 @@ function App() {
                 key={products.id}
                 products={products}
                 openModal={openModal}
-              />
+                cart={cart}
+                animatedProductId={animatedProductId} />
             ))}
-
           </div>
         </div>
       </section >
@@ -106,6 +153,7 @@ function App() {
 
       {/* <!-- Modal del Carrito --> */}
       <CartModal
+        key={uuidv4()}
         increaseQuantityProd={increaseQuantityProd}
         cart={cart}
       />
@@ -132,12 +180,12 @@ function App() {
             duration-300 z-50">
 
             <ProductDetails
-              key={selectedProduct.id}
+              key={uuidv4()}
               selectedProduct={selectedProduct}
               closeModal={closeModal}
               addToCart={addToCart}
               increaseQuantityProd={increaseQuantityProd}
-            />
+              triggerCarritoAnimation={triggerCarritoAnimation} />
           </div>
         </>
       )}

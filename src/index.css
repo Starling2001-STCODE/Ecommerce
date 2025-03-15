@@ -210,6 +210,26 @@ Estilos para el Modal Cart
   z-index: 50;
 }
 
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.carrito {
+  /* Estilos del carrito */
+}
+
+.carrito.animate {
+  animation: bounce 0.5s ease-in-out;
+}
+
 /* ==========================================================
 Reglas responsive:
 En pantallas pequeñas se muestran 2 columnas, en pantallas medianas/grandes 4 columnas.

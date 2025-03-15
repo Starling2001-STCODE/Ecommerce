@@ -1,9 +1,16 @@
 import { useMemo } from "react";
 
-export default function ProductDetails({ selectedProduct, addToCart, closeModal, increaseQuantityProd }) {
-
-  const productTotal = useMemo(() => selectedProduct.quantity * selectedProduct.price, [selectedProduct]);
-
+export default function ProductDetails({
+  selectedProduct,
+  addToCart,
+  closeModal,
+  increaseQuantityProd,
+  triggerCarritoAnimation,
+}) {
+  const productTotal = useMemo(
+    () => selectedProduct.quantity * selectedProduct.price,
+    [selectedProduct]
+  );
 
   return (
     <>
@@ -22,14 +29,20 @@ export default function ProductDetails({ selectedProduct, addToCart, closeModal,
 
         {/* Precio y Stock */}
         <div className="flex items-center mb-4">
-          <span className="text-xl font-semibold text-green-600 mr-2">${selectedProduct.price}</span>
+          <span className="text-xl font-semibold text-green-600 mr-2">
+            ${selectedProduct.price}
+          </span>
           {selectedProduct.oldPrice && (
-            <span className="text-sm text-gray-500 line-through">${selectedProduct.oldPrice}</span>
+            <span className="text-sm text-gray-500 line-through">
+              ${selectedProduct.oldPrice}
+            </span>
           )}
         </div>
         <div className="mb-4">
           <span className="text-gray-600 font-medium">Stock Disponible:</span>
-          <span className="ml-2 text-gray-800 font-semibold">{selectedProduct.stock}</span>
+          <span className="ml-2 text-gray-800 font-semibold">
+            {selectedProduct.stock}
+          </span>
         </div>
 
         {/* Variaciones */}
@@ -37,7 +50,10 @@ export default function ProductDetails({ selectedProduct, addToCart, closeModal,
           <h3 className="text-xl font-semibold">Variaciones</h3>
           <div className="flex space-x-2 mt-2">
             {selectedProduct.variations?.map((variation, index) => (
-              <button key={index} className="px-3 py-1 border rounded hover:bg-gray-100">
+              <button
+                key={index}
+                className="px-3 py-1 border rounded hover:bg-gray-100"
+              >
                 {variation}
               </button>
             ))}
@@ -46,16 +62,34 @@ export default function ProductDetails({ selectedProduct, addToCart, closeModal,
 
         {/* Control de Cantidad */}
         <div className="mb-4">
-          <label htmlFor="modalQuantityInput" className="block text-gray-600 font-medium mb-2">
+          <label
+            htmlFor="modalQuantityInput"
+            className="block text-gray-600 font-medium mb-2"
+          >
             Cantidad
           </label>
           <div className="flex items-center">
             <button
+              onClick={() => {
+                increaseQuantityProd(selectedProduct.id, "decrease");
+                triggerCarritoAnimation(selectedProduct.id);
+              }}
               id="decreaseQty"
-              className="bg-gray-200 p-2 rounded hover:bg-gray-300"
+              className="bg-[#002D62] text-white p-2 rounded hover:bg-[#001a3d]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M20 12H4"
+                />
               </svg>
             </button>
             <input
@@ -67,12 +101,27 @@ export default function ProductDetails({ selectedProduct, addToCart, closeModal,
               value={`${selectedProduct.quantity}`}
             />
             <button
-              onClick={() => increaseQuantityProd(selectedProduct)}
+              onClick={() => {
+                increaseQuantityProd(selectedProduct.id, "increase");
+                triggerCarritoAnimation(selectedProduct.id);
+              }}
               id="increaseQty"
-              className="bg-gray-200 p-2 rounded hover:bg-gray-300"
+              className="bg-[#CE1126] text-white p-2 rounded hover:bg-[#a50d1e]"
+
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
             </button>
           </div>
@@ -106,13 +155,16 @@ export default function ProductDetails({ selectedProduct, addToCart, closeModal,
         <div className="mt-auto">
           <button
             id="confirmAddToCart"
-            onClick={() => addToCart(selectedProduct)}
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={() => {
+              addToCart(); // Lógica para añadir al carrito
+              triggerCarritoAnimation(selectedProduct.id); // Activa la animación para este producto
+            }}
+            className="w-full bg-[#002D62] text-white px-4 py-2 rounded hover:bg-[#001a3d]"
           >
             Añadir al carrito
           </button>
         </div>
-      </div>
+      </div >
     </>
-  )
+  );
 }
